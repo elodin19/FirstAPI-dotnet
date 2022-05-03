@@ -27,6 +27,8 @@ namespace FirstAPI.Controllers
         //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Task<IActionResult>))]
         public async Task<IActionResult> GetAll()
         {
+            _logger.LogInformation("Accessing endpoint GetAll() - GET /api/car/", LogLevel.Information);
+
             var result = await _carService.GetAll();
 
             if (result.ToArray().Length == 0)
@@ -39,7 +41,9 @@ namespace FirstAPI.Controllers
         //[ProducesResponseType(typeof(Task<IActionResult>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get(int id)
         {
-            if (await _carRepository.ExistsById(id) == false) return NoContent();
+            _logger.LogInformation($"Accessing endpoint Get() - GET /api/car/{id}", LogLevel.Information);
+
+            if (!await _carRepository.ExistsById(id)) return NoContent();
 
             return Ok(await _carService.GetById(id));
         }
@@ -49,6 +53,8 @@ namespace FirstAPI.Controllers
         //[ProducesResponseType((int) HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Post([FromBody] Car car)
         {
+            _logger.LogInformation("Accessing endpoint Post() - POST /api/car/", LogLevel.Information);
+
             if (car == null)
                 return BadRequest();
 
@@ -67,6 +73,8 @@ namespace FirstAPI.Controllers
         //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Put([FromBody] Car car)
         {
+            _logger.LogInformation($"Accessing endpoint PUT() - PUT /api/car/ : id {car.Id}", LogLevel.Information);
+
             if (car == null)
                 return BadRequest();
 
@@ -84,6 +92,8 @@ namespace FirstAPI.Controllers
         //[ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(int id)
         {
+            _logger.LogInformation($"Accessing endpoint Delete() - DELETE /api/car/{id}", LogLevel.Information);
+
             if (!await _carRepository.ExistsById(id))
                 return NoContent();
 
